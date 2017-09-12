@@ -7,6 +7,8 @@ var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var projectRoot = path.resolve(__dirname, 'src')
 var buildPath = path.resolve(__dirname, 'build');
 var mainPath = path.resolve(__dirname, 'src', 'app.js');
+var tonePath = path.resolve(nodeModulesPath, 'tone/build', 'Tone.js');
+console.log(tonePath)
 
 var config = {
     // context: __dirname,
@@ -55,7 +57,10 @@ var config = {
         new webpack.ProvidePlugin({
             'THREE': 'three'
         }),
-    ]
+        new webpack.ProvidePlugin({
+            'Tone': tonePath
+        }),
+    ],
 };
 
 module.exports = config;

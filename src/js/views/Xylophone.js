@@ -3,9 +3,10 @@ import Base from './Base'
 import Wheel from './Wheel'
 
 class Bar extends THREE.Mesh {
-	constructor(scale, height, color) {
+	constructor(name, scale, height, settings) {
 		
 		// make the pill geometry and extract
+		var color = settings.color;
 		var material = new THREE.MeshPhongMaterial( {
 								color: color,
 								specular: new THREE.Color( 0xffffff ),
@@ -45,6 +46,12 @@ class Bar extends THREE.Mesh {
 		super( pillGeometry, material );
 		this.castShadow = true;
 		this.receiveShadow = true;
+		this.name = name;
+		this.note = settings.note;
+	}
+
+	getNote(){
+		return this.note;
 	}
 }
 
@@ -64,15 +71,40 @@ export default class Xylophone extends THREE.Object3D {
 	init(){		
 		// add the bars
 		const barCount = 8;
-		const colors = [
-			new THREE.Color( 0x1800F0 ),
-			new THREE.Color( 0x026FE0 ),
-			new THREE.Color( 0x00DCF5 ),
-			new THREE.Color( 0x00DB29 ),
-			new THREE.Color( 0xFFFA00 ),
-			new THREE.Color( 0xFF8E00 ),
-			new THREE.Color( 0xFF3D02 ),
-			new THREE.Color( 0xC41400 )
+		const settings = [
+			{
+				color: new THREE.Color( 0x1800F0 ),
+				note: 'C3'
+			},
+			{
+				color: new THREE.Color( 0x026FE0 ),
+				note: 'D3'
+			},
+			{
+				color: new THREE.Color( 0x00DCF5 ),
+				note: 'E3'
+			},
+			{
+				color: new THREE.Color( 0x00DB29 ),
+				note: 'F3'
+			},
+			{
+				color: new THREE.Color( 0xFFFA00 ),
+				note: 'G3'
+			},
+			{
+				color: new THREE.Color( 0xFF8E00 ),
+				note: 'A3'
+			},
+			{
+				color: new THREE.Color( 0xFF3D02 ),
+				note: 'B3'
+			},
+			{
+				color: new THREE.Color( 0xC41400 ),
+				note: 'C4'
+			},			
+			
 		]
 
 		var maxHeight = 0.0;
@@ -80,9 +112,8 @@ export default class Xylophone extends THREE.Object3D {
 		var scale = 25.0;
 		var minHeight = 2.0 * scale;
 		for( var i = 0; i < barCount; i++ ){
-			var color = new THREE.Color( 0xff0000 );
 			var height = 2.0 + ((barCount - i) * 0.3);
-			var bar = new Bar( scale, height, colors[i] );
+			var bar = new Bar( "bar" + i, scale, height, settings[i] );
 			var x = (i) * 30.0;
 			bar.translateX(x);
 			maxHeight = Math.max(maxHeight, height * scale);
@@ -114,6 +145,7 @@ export default class Xylophone extends THREE.Object3D {
 		baseGroup.add(wheel4);
 
 		this.add(baseGroup);
+		this.name = 'xylophone';
 		this.position.set(maxWidth * -0.5, 83.0, 0.0);
 	}
 
