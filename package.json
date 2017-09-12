@@ -1,0 +1,27 @@
+{
+  "name": "xylophone-land",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --port 8000"
+  },
+  "author": "Greg Kepler",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "css-loader": "^0.28.2",
+    "html-webpack-plugin": "^2.26.0",
+    "style-loader": "^0.18.1",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^2.2.0"
+  },
+  "dependencies": {
+    "glsl-noise": "0.0.0",
+    "glslify-loader": "^1.0.2",
+    "raw-loader": "^0.5.1",
+    "three": "^0.85.2"
+  }
+}
