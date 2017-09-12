@@ -81,7 +81,8 @@ export default class Base extends THREE.Mesh
 		super(baseGeometry, material);
 
 		this.baseBounds = topBaseBounds;
-		// this.getUl = this.getUl.bind(this);
+		this.castShadow = true;
+		this.receiveShadow = true;
 	}
 
 	getBounds(){

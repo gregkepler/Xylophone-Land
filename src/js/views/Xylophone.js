@@ -43,96 +43,10 @@ class Bar extends THREE.Mesh {
 		pillGeometry.rotateX(Math.PI * 0.5);
 		
 		super( pillGeometry, material );
+		this.castShadow = true;
+		this.receiveShadow = true;
 	}
 }
-
-
-
-
-
-class Shape extends THREE.Shape {
-	constructor(props) {
-		super(props);
-	}
-
-	arcTo(p1x, p1y, tx, ty, radius)
-	{
-		
-		// Get current point.
-		var p0 = this.currentPoint;
-		var p1 = new THREE.Vector2(p1x, p1y);
-		var t = new THREE.Vector2(tx, ty);
-		console.log(p0, p1, t);
-		
-		// Calculate the tangent vectors tangent1 and tangent2.
-		var p0t = (new THREE.Vector2()).subVectors(p0, t);
-		var p1t = (new THREE.Vector2()).subVectors(p1, t);
-
-		// Calculate tangent distance squares.
-		var p0tSquare = p0t.lengthSq();
-		var p1tSquare = p1t.lengthSq();
-
-		// Calculate tan(a/2) where a is the angle between vectors tangent1 and tangent2.
-		//
-		// Use the following facts:
-		//
-		//  p0t * p1t  = |p0t| * |p1t| * cos(a) <=> cos(a) =  p0t * p1t  / (|p0t| * |p1t|)
-		// |p0t x p1t| = |p0t| * |p1t| * sin(a) <=> sin(a) = |p0t x p1t| / (|p0t| * |p1t|)
-		//
-		// and
-		//
-		// tan(a/2) = sin(a) / ( 1 - cos(a) )
-
-		var numerator = p0t.y * p1t.x - p1t.y * p0t.x;
-		var denominator = Math.sqrt( p0tSquare * p1tSquare ) - ( p0t.x * p1t.x + p0t.y * p1t.y );
-
-		// The denominator is zero <=> p0 and p1 are colinear.
-		if( Math.abs( denominator ) < Number.EPSILON ) {
-			this.lineTo( t.x, t.y );
-		}
-		else {
-			// |b0 - t| = |b3 - t| = radius * tan(a/2).
-			var distanceFromT = Math.abs( radius * numerator / denominator );
-
-			// b0 = t + |b0 - t| * (p0 - t)/|p0 - t|.
-			// const vec2 b0 = t + distanceFromT * normalize( p0t );
-			var b0 = (new THREE.Vector2()).addVectors(t, p0t.clone().normalize().multiplyScalar(distanceFromT) );
-
-			// If b0 deviates from p0, add a line to it.
-			if( Math.abs(b0.x - p0.x) > Number.EPSILON || Math.abs(b0.y - p0.y) > Number.EPSILON ) {
-				// this.lineTo( b0.x, b0.y );
-			}
-
-			// b3 = t + |b3 - t| * (p1 - t)/|p1 - t|.
-			// const vec2 b3 = t + distanceFromT * normalize( p1t );
-			var b3 = (new THREE.Vector2()).addVectors(t, p1t.clone().normalize().multiplyScalar(distanceFromT) );
-
-			// The two bezier-control points are located on the tangents at a fraction
-			// of the distance[ tangent points <-> tangent intersection ].
-			// See "Approxmiation of a Cubic Bezier Curve by Circular Arcs and Vice Versa" by Aleksas Riskus
-			// http://itc.ktu.lt/itc354/Riskus354.pdf
-
-			var b0tSquare = (t.x - b0.x) *  (t.x - b0.x) + (t.y - b0.y) *  (t.y - b0.y);
-			var radiusSquare = radius * radius;
-			var fraction;
-
-			// Assume dist = radius = 0 if the radius is very small.
-			if( Math.abs( radiusSquare / b0tSquare ) < Number.EPSILON )
-				fraction = 0.0;
-			else
-				fraction = ( 4.0 / 3.0 ) / ( 1.0 + Math.sqrt( 1.0 + b0tSquare / radiusSquare ) );
-
-			// const vec2 b1 = b0 + fraction * (t - b0);
-			// const vec2 b2 = b3 + fraction * (t - b3);
-			var b1 = new THREE.Vector2().addVectors( b0, new THREE.Vector2().subVectors(t, b0).multiplyScalar( fraction) );
-			var b2 = new THREE.Vector2().addVectors( b3, new THREE.Vector2().subVectors(t, b3).multiplyScalar( fraction) );
-
-			// curveTo( b1, b2, b3 );
-			this.bezierCurveTo( b1.x, b1.y, b2.x, b2.y, b3.x, b3.y );
-		}
-	}
-}
-
 
 
 var mix = (pt1, pt2, a) => {
@@ -200,10 +114,9 @@ export default class Xylophone extends THREE.Object3D {
 		baseGroup.add(wheel4);
 
 		this.add(baseGroup);
-		this.position.set(maxWidth * -0.5, 0.0, 0.0);
+		this.position.set(maxWidth * -0.5, 83.0, 0.0);
 	}
 
 	render() {
-		// return this.mesh;
 	}
 }

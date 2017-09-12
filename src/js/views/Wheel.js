@@ -20,8 +20,8 @@ export default class Wheel extends THREE.Mesh {
 		var geometry = new THREE.ExtrudeGeometry( wheelShape, extrudeSettings );
 		geometry.translate( position.x, position.y, position.z - (extrudeAmt * 0.5) );
 		
-		
-		
 		super( geometry, material );
+		this.castShadow = true;
+		this.receiveShadow = true;
 	}
 }
