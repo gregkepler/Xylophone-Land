@@ -13,7 +13,7 @@ export default class Wheel extends THREE.Mesh {
 		var radius = 25.0;
 
 		var wheelShape = new THREE.Shape();
-		wheelShape.ellipse( 0.0, 0.0, radius, radius, Math.PI * 0.25, Math.PI * 2.25);
+		wheelShape.ellipse( 0.0, 0.0, radius, radius, Math.PI * -0.5, Math.PI * -2.5);
 
 		var extrudeAmt = 15.0;
 		var extrudeSettings = { amount: extrudeAmt, curveSegments: 128, bevelEnabled: true, bevelSegments: 16, steps: 5, bevelSize: 3.0, bevelThickness: 3.0 };

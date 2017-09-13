@@ -3,9 +3,8 @@ import 'three/examples/js/controls/OrbitControls'
 import 'three/examples/js/utils/ShadowMapViewer.js'
 import 'tone'
 
-import shaderVert from './shaders/custom.vert'
-import shaderFrag from './shaders/custom.frag'
 import Xylophone from './views/Xylophone'
+import Ground from './views/Ground'
 
 var SHADOW_MAP_WIDTH = 1024;
 var SHADOW_MAP_HEIGHT = 1024;
@@ -33,11 +32,6 @@ class Main {
         document.body.appendChild( this._renderer.domElement );
 
         this._controls = new THREE.OrbitControls( this._camera, this._renderer.domElement );
-
-        //this._controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
-        // this._controls.enableDamping = true;
-        // this._controls.dampingFactor = 0.25;
-        // this._controls.enableZoom = false;
 
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
@@ -68,28 +62,8 @@ class Main {
         this._scene.add( this.xylophone )
    
         // ground
-        var groundGeom = new THREE.PlaneBufferGeometry( 100, 100 );
-        var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffdd99 } );
-        var ground = new THREE.Mesh( groundGeom, groundMaterial );
-        ground.name = "ground";
-        ground.rotation.x = - Math.PI / 2;
-        ground.scale.set( 100, 100, 100 );
-        ground.castShadow = false;
-        ground.receiveShadow = true;
-        this._scene.add( ground );
-
-
-
-/*
-        this._scene.add( new THREE.AmbientLight( 0x222222 ) );
-        var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
-        directionalLight.position.set( 1, 1, 1 ).normalize();
-        this._scene.add( directionalLight );
-*/
-        
-
-
-        // console.log(Tone);
+        this.ground = new Ground();
+        this._scene.add( this.ground );
 
 
         // audio
@@ -136,11 +110,12 @@ class Main {
 
                 INTERSECTED = intersects[ 0 ].object;
                 INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                INTERSECTED.material.emissive.setHex( 0xff0000 );
+                INTERSECTED.material.emissive.setHex( 0x505050 );
 
                 // dispatch audio
                 var note = INTERSECTED.getNote();
                 this.synth.triggerAttackRelease( note, '8n');
+                this.ground.hitNote( INTERSECTED.material.color );
             // }
         } else {
             if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
@@ -170,7 +145,8 @@ class Main {
 
         this.raycaster.setFromCamera( this.mouse, this._camera );
 
-        //this._controls.update();
+        this._controls.update();
+        this.ground.update();
         this._renderer.render( this._scene, this._camera );
 
     }

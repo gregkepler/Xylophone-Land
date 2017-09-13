@@ -43,14 +43,14 @@ var config = {
             {
                 test: /\.(glsl|frag|vert)$/,
                 include: projectRoot,
-                loader: 'raw-loader!glslify',
+                loader: 'raw-loader',
                 exclude: [nodeModulesPath],
             },
         ]
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Example',
+            title: 'Xylophone Land',
             filename: 'index.html'
         }),
         new webpack.HotModuleReplacementPlugin(),
