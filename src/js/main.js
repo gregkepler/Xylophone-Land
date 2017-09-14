@@ -5,7 +5,7 @@ import 'three/examples/js/controls/OrbitControls';
 import 'three/examples/js/utils/ShadowMapViewer.js';
 import 'tone';
 
-import Xylophone from './views/Xylophone';
+import { Xylophone, Bar } from './views/Xylophone';
 import Ground from './views/Ground';
 
 var SHADOW_MAP_WIDTH = 1024;
@@ -24,6 +24,8 @@ class Main {
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
         this.intersected = undefined;
+        this.timer = 0.0;
+        this.prevTime = Date.now();
 
         this.animate();
     }
@@ -31,8 +33,9 @@ class Main {
     initScene(){
         // set up camera
         this.camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
-        this.camera.position.y = 300;
-        this.camera.position.z = 500;
+        this.camera.position.x = 300;
+        this.camera.position.y = 400;
+        this.camera.position.z = 400;
 
         this.scene = new THREE.Scene();
 
@@ -49,10 +52,10 @@ class Main {
 
     initLights() {
         // lights
-        var ambient = new THREE.AmbientLight( 0x444444 );
+        let ambient = new THREE.AmbientLight( 0x444444 );
         this.scene.add( ambient );
 
-        var light = new THREE.SpotLight( 0xffffff, 0.5 );
+        let light = new THREE.SpotLight( 0xffffff, 0.5 );
         light.position.set( 0, 400, 150 );
         light.target.position.set( 0, 0, 0 );
         light.castShadow = true;
@@ -110,26 +113,34 @@ class Main {
         event.preventDefault();
         
         // find intersections within xylophone children
-        var intersects = this.raycaster.intersectObjects( this.xylophone.children );
+        let intersects = this.raycaster.intersectObjects( this.xylophone.children );
         
         if ( intersects.length > 0 ) 
         {
-            // select the this.intersected bar
-            if ( this.intersected ) this.intersected.material.emissive.setHex( this.intersected.currentHex );
+            // reset the previously set bar
+            if ( this.intersected ) {
+                this.intersected.reset();
+                this.intersected = null;
+            }
 
-            this.intersected = intersects[ 0 ].object;
-            this.intersected.currentHex = this.intersected.material.emissive.getHex();
-            this.intersected.material.emissive.setHex( 0x505050 );
+            // select new bar
+            let isBar = intersects[ 0 ].object.constructor.name === "Bar";
+            if( isBar ){
+                this.intersected = intersects[ 0 ].object;
 
-            // dispatch audio
-            var note = this.intersected.getNote();
-            this.synth.triggerAttackRelease( note, '8n' );
+                 // select bar
+                this.intersected.hitNote();
 
-            // dispatch note hit to ground
-            this.ground.hitNote( this.intersected.material.color );
-            
+                // dispatch audio
+                let note = this.intersected.getNote();
+                this.synth.triggerAttackRelease( note, '8n' );
+
+                // dispatch note hit to ground
+                this.ground.hitNote( this.intersected.material.color );
+            }
+           
         } else {
-            if ( this.intersected ) this.intersected.material.emissive.setHex( this.intersected.currentHex );
+            if ( this.intersected ) this.intersected.reset();
             this.intersected = null;
         }       
     }
@@ -154,6 +165,9 @@ class Main {
 
         this.controls.update();
         this.ground.update();
+        if( this.intersected ){
+            this.intersected.update();    
+        }
         this.renderer.render( this.scene, this.camera );
     }
 }
