@@ -3,12 +3,6 @@
 ## About
 Xylophone Land is an experiment which features a playable 3D Playskool style xylophone. To interact, simply click on the different bars of the xylophone. You will then hear the corresponding note and see a blast of color on the floor below it. You can also rotate around the scene by clicking and dragging and scroll to zoom.
 
-Playskool Xylophone
-![Playskool Xylophone](xylophone.jpg "Playskool Xylophone")
-
-Xylophone Land
-![Xylophone Land](xylophone-land.jpg "Xylophone Land")
-
 ### Technology used
 * Nodejs with [Webpack](https://webpack.js.org/) for running the web app
 * [Babel](https://babeljs.io/) for transpiling ES6
@@ -18,6 +12,15 @@ Xylophone Land
 ### Tested Platforms
 * Chrome on OSX
 * Chrome on Android
+
+### Original Photo Playskool Xylophone
+![Playskool Xylophone](xylophone.jpg "Playskool Xylophone")
+
+### Xylophone Land screenshot
+![Xylophone Land](xylophone-land.jpg "Xylophone Land")
+
+
+This project is available on github at [https://github.com/gregkepler/Xylophone-Land](https://github.com/gregkepler/Xylophone-Land).
 
 ## Installation
 
