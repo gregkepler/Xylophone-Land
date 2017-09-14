@@ -1,8 +1,7 @@
 {
   "name": "xylophone-land",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A trippy interactive xylophone that plays synth sounds and lights up the ground beneath it",
   "scripts": {
     "start": "webpack-dev-server --port 8000"
   },
@@ -19,8 +18,6 @@
     "webpack-dev-server": "^2.2.0"
   },
   "dependencies": {
-    "glsl-noise": "0.0.0",
-    "glslify-loader": "^1.0.2",
     "raw-loader": "^0.5.1",
     "three": "^0.85.2",
     "tone": "^0.10.0"

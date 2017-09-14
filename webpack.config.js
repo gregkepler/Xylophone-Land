@@ -1,17 +1,15 @@
 /* eslint-env node */
-const path = require('path');
-const webpack = require('webpack');
+const path              = require('path');
+const webpack           = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var projectRoot = path.resolve(__dirname, 'src')
-var buildPath = path.resolve(__dirname, 'build');
-var mainPath = path.resolve(__dirname, 'src', 'app.js');
-var tonePath = path.resolve(nodeModulesPath, 'tone/build', 'Tone.js');
-console.log(tonePath)
+var nodeModulesPath     = path.resolve(__dirname, 'node_modules');
+var projectRoot         = path.resolve(__dirname, 'src')
+var buildPath           = path.resolve(__dirname, 'build');
+var mainPath            = path.resolve(__dirname, 'src', 'app.js');
+var tonePath            = path.resolve(nodeModulesPath, 'tone/build', 'Tone.js');
 
 var config = {
-    // context: __dirname,
     devtool: 'source-map',
     entry: [
         mainPath

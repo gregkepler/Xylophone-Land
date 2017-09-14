@@ -1,10 +1,12 @@
-import 'three'
+"use strict";
+
+import 'three';
 
 export default class Wheel extends THREE.Mesh {
 
 	constructor(position) {
 		
-		// make the pill geometry and extract
+		// make the wheel geometry and extrude
 		var material = new THREE.MeshPhongMaterial( {
 			color: new THREE.Color( 0xff0000 ),
 			specular: new THREE.Color( 0xffffff ),
